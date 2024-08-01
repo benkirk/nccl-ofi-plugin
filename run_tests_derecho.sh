@@ -30,7 +30,8 @@ echo && echo && echo
 
 
 echo "========== RUNNING NCCL TESTS =========="
-args="-b 512K -e 8G -f 4"
+mpi_args="--cpu-bind numa"
+exe_args="-b 512K -e 8G -f 4"
 for exe in nccl-tests/build/{all*_perf,sendrecv_perf}; do
 
     testname=$(basename ${exe})
@@ -39,43 +40,39 @@ for exe in nccl-tests/build/{all*_perf,sendrecv_perf}; do
     echo && echo && echo
 
     echo "# --> Intra-node (2GPUs)" | tee -a ${logfile}
-    cmd="mpiexec -n 2 -ppn 2 ${exe} ${args}"
+    cmd="mpiexec ${mpi_args} -n 2 -ppn 2 ${exe} ${exe_args}"
     echo "# --> ${cmd}" | tee -a ${logfile}
     echo "# --> BEGIN execution (${exe})"
     eval ${cmd} | tee -a ${logfile}
     echo "# --> END execution (${exe})"
 
     echo "# --> Inter-node (2GPUs)" | tee -a ${logfile}
-    cmd="mpiexec -n 2 -ppn 1 ${exe} ${args}"
+    cmd="mpiexec ${mpi_args} -n 2 -ppn 1 ${exe} ${exe_args}"
     echo "# --> ${cmd}" | tee -a ${logfile}
     echo "# --> BEGIN execution (${exe})"
     eval ${cmd} | tee -a ${logfile}
     echo "# --> END execution (${exe})"
 
     echo "# --> Intra-node (4GPUs)" | tee -a ${logfile}
-    cmd="mpiexec -n 4 -ppn 4 ${exe} ${args}"
+    cmd="mpiexec ${mpi_args} -n 4 -ppn 4 ${exe} ${exe_args}"
     echo "# --> ${cmd}" | tee -a ${logfile}
     echo "# --> BEGIN execution (${exe})"
     eval ${cmd} | tee -a ${logfile}
     echo "# --> END execution (${exe})"
 
     echo "# --> Inter-node (4GPUs)" | tee -a ${logfile}
-    cmd="mpiexec -n 4 -ppn 2 ${exe} ${args}"
+    cmd="mpiexec ${mpi_args} -n 4 -ppn 2 ${exe} ${exe_args}"
     echo "# --> ${cmd}" | tee -a ${logfile}
     echo "# --> BEGIN execution (${exe})"
     eval ${cmd} | tee -a ${logfile}
     echo "# --> END execution (${exe})"
 
     echo "# --> Inter-node (8 GPUs)" | tee -a ${logfile}
-    cmd="mpiexec -n 8 -ppn 4 ${exe} ${args}"
+    cmd="mpiexec ${mpi_args} -n 8 -ppn 4 ${exe} ${exe_args}"
     echo "# --> ${cmd}" | tee -a ${logfile}
     echo "# --> BEGIN execution (${exe})"
     eval ${cmd} | tee -a ${logfile}
     echo "# --> END execution (${exe})"
     echo && echo && echo
 
-
 done
-
-# mpiexec -n 8 -ppn 4 nccl-tests/build/all_reduce_perf -b 8 -e 4G -f 2
-# mpiexec -n 8 -ppn 4 nccl-tests/build/alltoall_perf -b 8 -e 4G -f 2
