@@ -2,3 +2,7 @@
 *.log
 *.log.*
 *.sh.o*
+aws-ofi-nccl/
+install/
+nccl-tests/
+nccl/

@@ -38,37 +38,37 @@ for exe in nccl-tests/build/{all*_perf,sendrecv_perf}; do
 
     echo && echo && echo
 
-    echo "# Intra-node (2GPUs)"
+    echo "# --> Intra-node (2GPUs)" | tee -a ${logfile}
     cmd="mpiexec -n 2 -ppn 2 ${exe} ${args}"
-    echo "# ${cmd}"
+    echo "# --> ${cmd}" | tee -a ${logfile}
     echo "# --> BEGIN execution (${exe})"
     eval ${cmd} | tee -a ${logfile}
     echo "# --> END execution (${exe})"
 
-    echo "# Inter-node (2GPUs)"
+    echo "# --> Inter-node (2GPUs)" | tee -a ${logfile}
     cmd="mpiexec -n 2 -ppn 1 ${exe} ${args}"
-    echo "# ${cmd}"
+    echo "# --> ${cmd}" | tee -a ${logfile}
     echo "# --> BEGIN execution (${exe})"
     eval ${cmd} | tee -a ${logfile}
     echo "# --> END execution (${exe})"
 
-    echo "# Intra-node (4GPUs)"
+    echo "# --> Intra-node (4GPUs)" | tee -a ${logfile}
     cmd="mpiexec -n 4 -ppn 4 ${exe} ${args}"
-    echo "# ${cmd}"
+    echo "# --> ${cmd}" | tee -a ${logfile}
     echo "# --> BEGIN execution (${exe})"
     eval ${cmd} | tee -a ${logfile}
     echo "# --> END execution (${exe})"
 
-    echo "# Inter-node (4GPUs)"
+    echo "# --> Inter-node (4GPUs)" | tee -a ${logfile}
     cmd="mpiexec -n 4 -ppn 2 ${exe} ${args}"
-    echo "# ${cmd}"
+    echo "# --> ${cmd}" | tee -a ${logfile}
     echo "# --> BEGIN execution (${exe})"
     eval ${cmd} | tee -a ${logfile}
     echo "# --> END execution (${exe})"
 
-    echo "# Inter-node (8 GPUs)"
+    echo "# --> Inter-node (8 GPUs)" | tee -a ${logfile}
     cmd="mpiexec -n 8 -ppn 4 ${exe} ${args}"
-    echo "# ${cmd}"
+    echo "# --> ${cmd}" | tee -a ${logfile}
     echo "# --> BEGIN execution (${exe})"
     eval ${cmd} | tee -a ${logfile}
     echo "# --> END execution (${exe})"
